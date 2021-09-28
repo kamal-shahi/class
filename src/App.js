@@ -23,17 +23,16 @@ function App() {
       setSession({isLoggedin: false, user: {}})
     }
   }
-  
 const logout = ()=> {
   if(window.confirm('Are you sure want to logout ?')){
     storage.removeItem('user');
      checkSession();
   }
 }
-
+ 
   const login = ({ email, password })=> {
-      const user_ = users;
-    const isValid = (email===user_.email) && (password === user_.password);
+    const user_ = users.find(data => data.email === email);
+    const isValid = user_ ? (email===user_.email) && (password === user_.password) : false;
     if(isValid){
       storage.setItem('user', JSON.stringify(user_));
       checkSession();
@@ -41,10 +40,15 @@ const logout = ()=> {
       alert('Username password not matched');
     }
   }
+  
   useEffect(()=> {
       // setSession({...session, isLoggedin: true, user: users})
       checkSession()
-  }, [])
+  }, []);
+  const updateUser = (datas)=> {
+    storage.setItem('user', JSON.stringify(datas));
+    checkSession();
+  }
 
   return (
       <Router>
@@ -70,7 +74,7 @@ const logout = ()=> {
                         </Switch>
                   </div>
                 <div className="col-3 pr-0">
-                    {session && <MyProfile logout={logout} login={login} session={session}/>}
+                    {session && session.user && <MyProfile updateUser={updateUser} logout={logout} login={login} session={session}/>}
                     <p className="col-12 p-2 m-0 border rounded mt-2">
                     sometimes by accident, sometimes on purpose (injected humour and the like).
                     </p>

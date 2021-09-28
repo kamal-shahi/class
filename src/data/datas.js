@@ -49,12 +49,17 @@ const signup = {
     ]
 }
 
-const users =  {
+const users =  [{
         name: 'Kamal Shahi',
         image: 'https://thevakundo.com//backgrounds/1611312700933-ac.jpg',
         email: 'kamal@gmail.com',
         password: 'password'
-    };
+    },{
+        name: 'Suman Giri',
+        image: 'https://thevakundo.com//backgrounds/1611312700933-ac.jpg',
+        email: 'suman@gmail.com',
+        password: 'password'
+    }];
 
 const carousel = [
     'https://thevakundo.com//backgrounds/1611312700933-ac.jpg', 

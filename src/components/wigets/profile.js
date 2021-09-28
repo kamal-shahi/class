@@ -1,11 +1,34 @@
-import React, { useState } from "react";
-export default function Profile({login, logout, session}) {
-       const user = session.user;
+import React, { useEffect, useState } from "react";
+export default function Profile({login, logout, updateUser, session}) {
+    //    const user = session.user;
+       const [user, setUser] = useState({...session.user});
+       const [ edit, setEdit ] = useState(false);
+       const [ form, setForm ] = useState({});
+
+        useEffect(()=> {
+            setUser({...session.user})
+        }, [session]);
+
+        const update = ()=> {
+            const payload = {
+                ...user,
+                ...form
+            };
+            updateUser(payload);
+            setEdit(false);
+        }
+
         return((session.isLoggedin && user) ? 
             <div className="card sticky-top" style={{width:'100%', zIndex: 99}}>
                 <img className="card-img-top" src={user.image} alt="Card image"/>
                 <div className="card-body">
-                <h4 className="card-title">{user.name}</h4>
+               {edit ?
+                <div className="col-12 p-0 mt-2">
+                     <input defaultValue={user.image} onChange={(e)=> setForm({...form, image: e.target.value})}/>
+                     <input defaultValue={user.name} onChange={(e)=> setForm({...form, name: e.target.value})}/>
+                     <button onClick={update}>Update</button>
+                </div>
+               : <h4 className="card-title">{user.name} <button onClick={()=> setEdit(true)}>edit</button> </h4>}
                 <p className="card-text">Some example text.</p>
                 <a href="#" className="btn btn-primary">See Profile</a>
                 <a href="#" onClick={logout} className="btn btn-danger ml-2">Logout</a>
